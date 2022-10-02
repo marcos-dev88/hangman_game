@@ -3,10 +3,6 @@
 
 int printArt(int tryLost, int bodyParts[6]){
 
-    if (tryLost == 8){
-        return 1;
-    }
-
     if (tryLost != 0){
         bodyParts[tryLost-1] = tryLost;
     }
@@ -48,6 +44,11 @@ int printArt(int tryLost, int bodyParts[6]){
     printf("\n|");
     printf("\n|");
     printf("\n|");
+    
+    if (tryLost == 6){
+        return 1;
+    }
+
     return 0;
 }
 
@@ -66,6 +67,14 @@ void checkMissed(int *isRight, int *miss) {
         *isRight = 0; 
 }
 
+void chooseSecretWord(char secretWord[20]){
+    sprintf(secretWord, "someword");
+}
+
+void lostGameScreen(){
+    printf("\nsorry kid, you lost...");
+}
+
 int main(){
 
 
@@ -79,12 +88,16 @@ int main(){
     int right = 0;
     int try = 0;
 
-    sprintf(secretWord, "someword");
+    chooseSecretWord(secretWord);
 
     do{ 
         generateGround(wordGround, secretWord);
 
-        int some = printArt(miss, bodyParts);
+        int isLost = printArt(miss, bodyParts);
+        if (isLost){
+            lostGameScreen();
+            return 0;
+        }
         printf("\n");
         printf("\n%s", wordGround);
         printf("\n Type a letter that you think that have "); 
