@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int printArt(int tryLost, int bodyParts[6]){
 
@@ -7,6 +8,7 @@ int printArt(int tryLost, int bodyParts[6]){
         bodyParts[tryLost-1] = tryLost;
     }
 
+    system("clear");
     printf("\n|----------------");
     printf("\n|               |");
     printf("\n|               |");
@@ -72,7 +74,7 @@ void chooseSecretWord(char secretWord[20]){
 }
 
 void lostGameScreen(){
-    printf("\nsorry kid, you lost...");
+    printf("\nsorry bro, you lost...");
 }
 
 int main(){
