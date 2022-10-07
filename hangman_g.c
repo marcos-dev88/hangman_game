@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "haders_hang.h" // this tell to compiler the all methods with its signatures
+                         
+#define WORDPATH "./words.txt"
 
 int main(){
     int bodyParts[6] = {0, 0, 0, 0, 0, 0};
@@ -42,6 +45,30 @@ int main(){
     }while(!point && !lose);
 
     return 0;
+}
+
+int fileLines(const char *restrict path){
+    FILE *f;
+    char fileCharacter;
+    int lines = 0;
+
+    f = fopen(path, "r");
+
+    if (f == NULL){
+        printf("Sorry, this file doesn't exist");
+        exit(1);
+    }
+
+    while(fileCharacter != EOF){
+        fileCharacter = fgetc(f);
+        if (fileCharacter == '\n'){
+            lines++;
+        }
+    }
+
+    fclose(f);
+
+    return lines;
 }
 
 int printArt(int tryLost, int bodyParts[6]){
@@ -112,7 +139,23 @@ void checkMissed(int *isRight, int *miss) {
 }
 
 void chooseSecretWord(char secretWord[20]){
-    sprintf(secretWord, "someword");
+    FILE *f;
+    int lines = fileLines(WORDPATH);
+
+    f = fopen(WORDPATH, "r");
+
+    if (f == NULL){
+        printf("Sorry, this file doesn't exist");
+        exit(1);
+    }
+
+    srand(time(0));
+    int rndm = rand() % lines;
+
+    for(int i = 0; i <= rndm; i++){
+        fscanf(f, "%s", secretWord);
+    }
+    fclose(f);
 }
 
 void lostGameScreen(){
