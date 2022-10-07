@@ -1,6 +1,48 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "haders_hang.h" // this tell to compiler the all methods with its signatures
+
+int main(){
+    int bodyParts[6] = {0, 0, 0, 0, 0, 0};
+    char secretWord[20];
+    char wordGround[20];
+    char guessedLetter;
+    int point = 0;
+    int lose = 0;
+    int miss = 0;
+    int right = 0;
+    int try = 0;
+
+    chooseSecretWord(secretWord);
+
+    do{ 
+        generateGround(wordGround, secretWord);
+
+        int isLost = printArt(miss, bodyParts);
+        if (isLost){
+            lostGameScreen();
+            return 0;
+        }
+        printf("\n");
+        printf("\n%s", wordGround);
+        printf("\n Type a letter that you think that have "); 
+        scanf(" %c", &guessedLetter);
+       
+        for(int i = 0; i < strlen(secretWord); i++){
+            if(guessedLetter == secretWord[i]){
+                wordGround[i] = secretWord[i];
+                /* printf("\nletter in position %d is %c \n", i, secretWord[i]); */
+                right = 1;
+            } 
+        }
+        checkMissed(&right, &miss);
+        try++;
+
+    }while(!point && !lose);
+
+    return 0;
+}
 
 int printArt(int tryLost, int bodyParts[6]){
 
@@ -77,45 +119,3 @@ void lostGameScreen(){
     printf("\nsorry bro, you lost...");
 }
 
-int main(){
-
-
-    int bodyParts[6] = {0, 0, 0, 0, 0, 0};
-    char secretWord[20];
-    char wordGround[20];
-    char guessedLetter;
-    int point = 0;
-    int lose = 0;
-    int miss = 0;
-    int right = 0;
-    int try = 0;
-
-    chooseSecretWord(secretWord);
-
-    do{ 
-        generateGround(wordGround, secretWord);
-
-        int isLost = printArt(miss, bodyParts);
-        if (isLost){
-            lostGameScreen();
-            return 0;
-        }
-        printf("\n");
-        printf("\n%s", wordGround);
-        printf("\n Type a letter that you think that have "); 
-        scanf(" %c", &guessedLetter);
-       
-        for(int i = 0; i < strlen(secretWord); i++){
-            if(guessedLetter == secretWord[i]){
-                wordGround[i] = secretWord[i];
-                /* printf("\nletter in position %d is %c \n", i, secretWord[i]); */
-                right = 1;
-            } 
-        }
-        checkMissed(&right, &miss);
-        try++;
-
-    }while(!point && !lose);
-
-    return 0;
-}
