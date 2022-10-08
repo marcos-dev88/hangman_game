@@ -7,7 +7,7 @@
 #define WORDPATH "./words.txt"
 
 int main(){
-    int bodyParts[6] = {0, 0, 0, 0, 0, 0};
+    int bodyParts[7] = {0, 0, 0, 0, 0, 0, 0};
     char secretWord[20];
     char wordGround[20];
     char guessedLetter;
@@ -71,7 +71,7 @@ int fileLines(const char *restrict path){
     return lines;
 }
 
-int printArt(int tryLost, int bodyParts[6]){
+int printArt(int tryLost, int bodyParts[7]){
 
     if (tryLost != 0){
         bodyParts[tryLost-1] = tryLost;
@@ -92,19 +92,25 @@ int printArt(int tryLost, int bodyParts[6]){
 
     if (bodyParts[2] == 3 && bodyParts[3] == 0){
         bodyParts[2] = 0;
+        printf("\n|               |");
+    }
+
+
+    if (bodyParts[3] == 4 && bodyParts[2] == 0){
+        bodyParts[3] = 0;
         printf("\n|              /|");
     }
 
-    if (bodyParts[3] == 4 && bodyParts[2] == 0){
+    if (bodyParts[4] == 5 && bodyParts[3] == 0){
         printf("\n|              /|\\");
     }
 
-    if (bodyParts[4] == 5 && bodyParts[5] == 0){
-        bodyParts[4] = 0;
+    if (bodyParts[5] == 6 && bodyParts[6] == 0){
+        bodyParts[5] = 0;
         printf("\n|              /");
     }
 
-    if (bodyParts[5] == 6 && bodyParts[4] == 0){
+    if (bodyParts[6] == 7 && bodyParts[5] == 0){
         printf("\n|              / \\");
     }
     printf("\n|");
@@ -116,7 +122,7 @@ int printArt(int tryLost, int bodyParts[6]){
     printf("\n|");
     printf("\n|");
     
-    if (tryLost == 6){
+    if (tryLost == 7){
         return 1;
     }
 
