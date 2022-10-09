@@ -112,37 +112,10 @@ int printArt(int tryLost, int bodyParts[7]){
     printf("\n|               |");
     printf("\n|               |");
     printf("\n|               |");
-    if (bodyParts[0] == 1){
-        printf("\n|               O");
-    }
-
-    if (bodyParts[1] == 2){
-        printf("\n|               ¨");
-    }
-
-    if (bodyParts[2] == 3 && bodyParts[3] == 0){
-        bodyParts[2] = 0;
-        printf("\n|               |");
-    }
-
-
-    if (bodyParts[3] == 4 && bodyParts[2] == 0){
-        bodyParts[3] = 0;
-        printf("\n|              /|");
-    }
-
-    if (bodyParts[4] == 5 && bodyParts[3] == 0){
-        printf("\n|              /|\\");
-    }
-
-    if (bodyParts[5] == 6 && bodyParts[6] == 0){
-        bodyParts[5] = 0;
-        printf("\n|              /");
-    }
-
-    if (bodyParts[6] == 7 && bodyParts[5] == 0){
-        printf("\n|              / \\");
-    }
+    printf("\n|               %c", (tryLost >= 1 ? 'O' : ' '));
+    printf("\n|               %c", (tryLost >= 2 ? '"' : ' '));
+    printf("\n|              %c%c%c", (tryLost >= 4 ? '/' : ' '), (tryLost >= 3 ? '|' : ' '), (tryLost >= 5 ? '\\' : ' '));
+    printf("\n|              %c %c", (tryLost >= 6 ? '/' : ' '), (tryLost >=7 ? '\\' : ' '));
     printf("\n|");
     printf("\n|");
     printf("\n|");
