@@ -8,40 +8,65 @@
 
 int main(){
     int bodyParts[7] = {0, 0, 0, 0, 0, 0, 0};
-    char secretWord[20];
-    char wordGround[20];
+    char secretWord[100] = "";
+    char wordGround[100] = "";
+    char alpabeth[26] = {};
     char guessedLetter;
     int point = 0;
     int lose = 0;
     int miss = 0;
     int right = 0;
-    int try = 0;
+
+    int jumpTry = 0;
+    int try;
+
+    int hit = 0; 
 
     chooseSecretWord(secretWord);
 
     do{ 
         generateGround(wordGround, secretWord);
-
         int isLost = printArt(miss, bodyParts);
         if (isLost){
             lostGameScreen();
             return 0;
         }
+
+        printf("\ntried letters: %s\n", alpabeth);
+
         printf("\n");
         printf("\n%s", wordGround);
+        int won = checkWon(hit, secretWord);
+        if (won){
+            winScreen(); 
+            return 0;
+        }
         printf("\n Type a letter that you think that have "); 
         scanf(" %c", &guessedLetter);
-       
+      
+        for(int i = 0; i < strlen(alpabeth); i++){ 
+            jumpTry = 0;
+            if(guessedLetter == alpabeth[i]){
+                jumpTry = 1;
+            }
+        }
+
+        alpabeth[try] = guessedLetter;
+
         for(int i = 0; i < strlen(secretWord); i++){
             if(guessedLetter == secretWord[i]){
                 wordGround[i] = secretWord[i];
                 /* printf("\nletter in position %d is %c \n", i, secretWord[i]); */
                 right = 1;
+                hit++;
             } 
         }
         checkMissed(&right, &miss);
-        try++;
-
+        
+        if(!jumpTry){
+            try++;
+        }
+        
     }while(!point && !lose);
 
     return 0;
@@ -129,7 +154,7 @@ int printArt(int tryLost, int bodyParts[7]){
     return 0;
 }
 
-void generateGround(char ground[20], char secretWord[20]){
+void generateGround(char ground[], const char *secretWord){
         for(int i = 0; i < strlen(secretWord); i++){  
             if(ground[i] == 0){ 
                 sprintf(&ground[i], "_");
@@ -144,7 +169,14 @@ void checkMissed(int *isRight, int *miss) {
         *isRight = 0; 
 }
 
-void chooseSecretWord(char secretWord[20]){
+int checkWon(int hit, char const *secretWord){
+    if (hit == strlen(secretWord)){
+        return 1;
+    }
+    return 0;
+}
+
+void chooseSecretWord(char *secretWord){
     FILE *f;
     int lines = fileLines(WORDPATH);
 
@@ -166,5 +198,9 @@ void chooseSecretWord(char secretWord[20]){
 
 void lostGameScreen(){
     printf("\nsorry bro, you lost...");
+}
+
+void winScreen(){
+    printf("\nCongratulations! you won the game! ");
 }
 
