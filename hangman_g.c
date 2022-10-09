@@ -20,15 +20,12 @@ int main(){
     int jumpTry = 0;
     int try;
 
-    int won = 0;
     int hit = 0; 
 
     chooseSecretWord(secretWord);
 
     do{ 
         generateGround(wordGround, secretWord);
-        checkWon(&won, hit, secretWord);
-
         int isLost = printArt(miss, bodyParts);
         if (isLost){
             lostGameScreen();
@@ -37,9 +34,13 @@ int main(){
 
         printf("\ntried letters: %s\n", alpabeth);
 
-        printf("\n\n won: %d\n\n", won);
         printf("\n");
         printf("\n%s", wordGround);
+        int won = checkWon(hit, secretWord);
+        if (won){
+            winScreen(); 
+            return 0;
+        }
         printf("\n Type a letter that you think that have "); 
         scanf(" %c", &guessedLetter);
       
@@ -65,6 +66,7 @@ int main(){
         if(!jumpTry){
             try++;
         }
+        
     }while(!point && !lose);
 
     return 0;
@@ -167,14 +169,14 @@ void checkMissed(int *isRight, int *miss) {
         *isRight = 0; 
 }
 
-void checkWon(int *point, int hit, char const *secretWord){
+int checkWon(int hit, char const *secretWord){
     if (hit == strlen(secretWord)){
-        *point = 1;
+        return 1;
     }
-    *point = 0;
+    return 0;
 }
 
-void chooseSecretWord(const char *restrict secretWord){
+void chooseSecretWord(char *secretWord){
     FILE *f;
     int lines = fileLines(WORDPATH);
 
@@ -196,5 +198,9 @@ void chooseSecretWord(const char *restrict secretWord){
 
 void lostGameScreen(){
     printf("\nsorry bro, you lost...");
+}
+
+void winScreen(){
+    printf("\nCongratulations! you won the game! ");
 }
 
