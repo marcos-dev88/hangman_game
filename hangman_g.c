@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include "haders_hang.h" // this tell to compiler the all methods with its signatures
+#include "headers_hang.h" // this tell to compiler the all methods with its signatures
+#include "headers_hang_file.h" // adding all file management functions here
                          
 #define WORDPATH "./words.txt"
 
@@ -38,7 +39,11 @@ int main(){
         printf("\n%s", wordGround);
         int won = checkWon(hit, secretWord);
         if (won){
-            winScreen(); 
+            char wantAddNewWord;
+            winScreen();
+            printf("\nDo you wanna add a new word? [y/n] ");
+            scanf(" %c", &wantAddNewWord);
+            addNewWord(wantAddNewWord);
             return 0;
         }
         printf("\n Type a letter that you think that have "); 
@@ -194,6 +199,31 @@ void chooseSecretWord(char *secretWord){
         fscanf(f, "%s", secretWord);
     }
     fclose(f);
+}
+
+void addNewWord(char wantAddWord){
+    if(wantAddWord == 'y' || wantAddWord == 'Y'){
+        FILE *f;
+        char newWord[100] = "";
+        printf("Write the new word: ");
+        scanf("%s", newWord);
+
+        /* int qntt = fileLines(WORDPATH); */
+        /* qntt++; */
+
+        f = fopen(WORDPATH, "r+");
+        if(f == NULL){
+            printf("Sorry, this file doesn't exist");
+            exit(1);
+        }
+
+        /* fseek(f, 0, SEEK_SET); */
+        fseek(f, 0, SEEK_END);
+
+        fprintf(f, "\n%s", newWord);
+
+        fclose(f);
+    }
 }
 
 void lostGameScreen(){
