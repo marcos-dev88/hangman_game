@@ -10,38 +10,74 @@ int main(){
     int bodyParts[7] = {0, 0, 0, 0, 0, 0, 0};
     char secretWord[20];
     char wordGround[20];
+    char alpabeth[26] = {};
     char guessedLetter;
     int point = 0;
     int lose = 0;
     int miss = 0;
     int right = 0;
-    int try = 0;
+
+    int jumpTry = 0;
+    int try;
+
+    int won = 0;
+    int hit = 0; 
 
     chooseSecretWord(secretWord);
 
     do{ 
         generateGround(wordGround, secretWord);
+        checkWon(&won, hit, secretWord);
 
         int isLost = printArt(miss, bodyParts);
         if (isLost){
             lostGameScreen();
             return 0;
         }
+
+        printf("\nalphabet: %s\n", alpabeth);
+
         printf("\n");
         printf("\n%s", wordGround);
         printf("\n Type a letter that you think that have "); 
         scanf(" %c", &guessedLetter);
        
+        /* for(int i = 0; i < 26; i++){ */
+        /*     if (guessedLetter == alpabeth[i]){ */
+        /*         jumpTry = 1; */
+        /*         break; */
+        /*     } */
+        /* } */
+
+
+        for(int i = 0; i < 26; i++){
+            if(guessedLetter != alpabeth[i]){
+                alpabeth[try] = guessedLetter;
+                jumpTry = 0;
+            }
+
+            if(guessedLetter == alpabeth[i]){
+                jumpTry = 1;
+            }
+        }
+
         for(int i = 0; i < strlen(secretWord); i++){
             if(guessedLetter == secretWord[i]){
                 wordGround[i] = secretWord[i];
                 /* printf("\nletter in position %d is %c \n", i, secretWord[i]); */
                 right = 1;
+                hit++;
             } 
         }
         checkMissed(&right, &miss);
-        try++;
+        
+        /* if (won){ */
+        /*     break; */
+        /* } */
 
+        if(!jumpTry){
+            try++;
+        }
     }while(!point && !lose);
 
     return 0;
@@ -77,7 +113,7 @@ int printArt(int tryLost, int bodyParts[7]){
         bodyParts[tryLost-1] = tryLost;
     }
 
-    system("clear");
+    /* system("clear"); */
     printf("\n|----------------");
     printf("\n|               |");
     printf("\n|               |");
@@ -142,6 +178,14 @@ void checkMissed(int *isRight, int *miss) {
             (*miss)++;
         }
         *isRight = 0; 
+}
+
+void checkWon(int *point, int hit, char const *secretWord){
+    printf("the hit: %d, the len of word: %d, the point %d", hit, strlen(secretWord), *point);
+    if (hit == strlen(secretWord)){
+        *point = 1;
+    }
+    *point = 0;
 }
 
 void chooseSecretWord(char secretWord[20]){
